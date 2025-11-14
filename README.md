@@ -1,7 +1,6 @@
 # Threat-Hunt-Report-Unauthorized-TOR-Usage-
 
 
-<img width="400" src="https://github.com/user-attachments/assets/44bac428-01bb-4fe9-9d85-96cba7698bee" alt="Tor Logo with the onion and a crosshair on it"/>
 
 
 # Threat Hunt Report: Unauthorized TOR Usage
@@ -35,11 +34,6 @@ DeviceFileEvents
 | order by Timestamp desc
 | project Timestamp, DeviceName, ActionType, FileName, FolderPath, SHA256, Account = InitiatingProcessAccountName
 ```
-<img width="1000" height="248" alt="Screenshot 2025-11-12 at 12 12 13 PM" src="https://github.com/user-attachments/assets/2c2595e2-fa7f-49d2-be52-ca2b598b865c"/>
-
-
-
----
 
 ### 2. Searched the `DeviceProcessEvents` Table
 
@@ -53,7 +47,7 @@ DeviceProcessEvents
 | where ProcessCommandLine contains "tor-browser-windows-x86_64-portable-15.0.exe"
 | project Timestamp, AccountName, FileName, ProcessCommandLine,SHA256,FolderPath
 ```
-<img width="1000" height="233" alt="Screenshot 2025-11-12 at 12 15 51 PM" src="https://github.com/user-attachments/assets/f1d2dae0-f2d5-48bd-ab42-f766b4f214c6"/>
+
 --------
 
 ### 3. Searched the `DeviceProcessEvents` Table for TOR Browser Execution
@@ -71,7 +65,6 @@ DeviceFileEvents
 | order by Timestamp desc
 | project Timestamp , DeviceName, FileName, FolderPath , SHA256 , accout=InitiatingProcessAccountName
 ```
-<img width="1000" height="248" alt="Screenshot 2025-11-12 at 12 12 13 PM" src="https://github.com/user-attachments/assets/ffe228ac-f275-4f63-b4af-b75160f99b64">
 
 
 ---
@@ -86,7 +79,6 @@ DeviceProcessEvents
 | project Timestamp, DeviceName, ActionType, FileName, FolderPath,SHA256, ProcessCommandLine
 | order by Timestamp desc
 ```
-<img width="990" height="339" alt="Screenshot 2025-11-12 at 12 25 44 PM" src="https://github.com/user-attachments/assets/0848923e-6d47-4b12-a2b4-afc0b74a8c72"/>
 
 
 
@@ -104,7 +96,6 @@ DeviceNetworkEvents
 | project Timestamp, DeviceName, InitiatingProcessAccountName, ActionType, RemoteIP, RemotePort, RemoteUrl, InitiatingProcessFileName, InitiatingProcessFolderPath  
 
 ```
-<img width="976" height="299" alt="Screenshot 2025-11-12 at 12 32 02 PM" src="https://github.com/user-attachments/assets/0a5d0b99-1293-4437-89b8-34d1017492cb">
 
 ---
 
