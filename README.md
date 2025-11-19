@@ -34,6 +34,9 @@ DeviceFileEvents
 | project Timestamp, DeviceName, ActionType, FileName, FolderPath, SHA256, Account = InitiatingProcessAccountName
 ```
 
+<img width="988" height="211" alt="Screenshot 2025-11-19 at 2 04 26 AM" src="https://github.com/user-attachments/assets/89537bd4-adc3-4490-96f2-cf4e623bf596" />
+
+
 ### 2. Searched the `DeviceProcessEvents` Table
 
 Searched for any ProcessCommandLine entries containing the string "tor-browser-windows-x86_64-portable-15.0.exe". Based on the logs returned, at 2025-11-11T07:24:38.0563663Z, the user adamalme on the device Alme-Windows-203 executed the file tor-browser-windows-x86_64-portable-15.0.exe from their Downloads folder (C:\Users\Adamalme\Downloads) using a command that initiated a silent installation.
@@ -47,26 +50,29 @@ DeviceProcessEvents
 | project Timestamp, AccountName, FileName, ProcessCommandLine,SHA256,FolderPath
 ```
 
+<img width="990" height="302" alt="Screenshot 2025-11-19 at 2 06 24 AM" src="https://github.com/user-attachments/assets/8b8f74db-f20e-409e-be43-7c04badf3cae" />
+
 --------
 
 ### 3. Searched the `DeviceProcessEvents` Table for TOR Browser Execution
 
-Searched for any indication that user "employee" actually opened the TOR browser. There was evidence that they did open it at `2024-11-08T22:17:21.6357935Z`. There were several other instances of `firefox.exe` (TOR) as well as `tor.exe` spawned afterwards.
+Searched for any indication that user "adamalme" actually opened the TOR browser. There was evidence that they did open it at `2025-11-11T07:18:27.7691344Z`. There were several other instances of `firefox.exe` (TOR) as well as `tor.exe` spawned afterwards.
 
-**Query used to locate events:**
+**Query used to locate events:**  
 
-```kql
-DeviceFileEvents
-| where DeviceName contains "Alme-Window-203"
-| where InitiatingProcessAccountName == "adamalme"
-| where FileName startswith "tor"
-| where Timestamp >= datetime(2025-11-11T07:43:11.4085219Z)
-| order by Timestamp desc
-| project Timestamp , DeviceName, FileName, FolderPath , SHA256 , accout=InitiatingProcessAccountName
-```
+    DeviceFileEvents
+    | where DeviceName contains "Alme-Window-203"
+    | where InitiatingProcessAccountName == "adamalme"
+    | where FileName startswith "tor"
+    | where Timestamp >= datetime(2025-11-11T07:18:27.7691344Z)
+    | project Timestamp , DeviceName, FileName, FolderPath , SHA256 , accout=InitiatingProcessAccountName
+
+
+<img width="987" height="399" alt="Screenshot 2025-11-19 at 2 15 44 AM" src="https://github.com/user-attachments/assets/04dc8fca-a43d-41f5-923c-c6e90f794e32" />
 
 
 ---
+
 Searched the DeviceProcessEvents table for indications that user “adam” executed the Tor Browser. Evidence shows the browser was launched at 2025-11-11T07:25:57.2928976Z . Additional instances of firefox.exe (associated with Tor Browser) and tor.exe were observed subsequently, indicating multiple Tor-related processes were spawned.
 
 **Query used to locate events:**
@@ -78,12 +84,13 @@ DeviceProcessEvents
 | project Timestamp, DeviceName, ActionType, FileName, FolderPath,SHA256, ProcessCommandLine
 | order by Timestamp desc
 ```
+<img width="1003" height="399" alt="Screenshot 2025-11-19 at 2 19 52 AM" src="https://github.com/user-attachments/assets/7b4c93a2-4489-4fb7-8733-c5b673400198" />
 
 
 
 ### 5. Searched the `DeviceNetworkEvents` Table for TOR Network Connections
 
-Searched for any indication the TOR browser was used to establish a connection using any of the known TOR ports. At `2024-11-08T22:18:01.1246358Z`, an employee on the "threat-hunt-lab" device successfully established a connection to the remote IP address `176.198.159.33` on port `9001`. The connection was initiated by the process `tor.exe`, located in the folder `c:\users\employee\desktop\tor browser\browser\torbrowser\tor\tor.exe`. There were a couple of other connections to sites over port `443`.
+Searched for any indication the TOR browser was used to establish a connection using any of the known TOR ports. At `2025-11-11T04:26:26.5132717Z`, an employee on the "threat-hunt-lab" device successfully established a connection to the remote IP address `176.198.159.33` on port `9001`. The connection was initiated by the process `tor.exe`, located in the folder `c:\users\employee\desktop\tor browser\browser\torbrowser\tor\tor.exe`. There were a couple of other connections to sites over port `443`.
 
 **Query used to locate events:**
 
@@ -91,10 +98,13 @@ Searched for any indication the TOR browser was used to establish a connection u
 DeviceNetworkEvents
 | where DeviceName contains "alme-Window-203"
 | where InitiatingProcessAccountName != "system" 
+| where Timestamp >= datetime(2025-11-11T04:26:26.5132717Z)
 | where RemotePort in ("9001", "9030", "9040", "9050", "9051", "9150", "80", "443") 
 | project Timestamp, DeviceName, InitiatingProcessAccountName, ActionType, RemoteIP, RemotePort, RemoteUrl, InitiatingProcessFileName, InitiatingProcessFolderPath  
+  
 
 ```
+<img width="1003" height="399" alt="Screenshot 2025-11-19 at 2 23 30 AM" src="https://github.com/user-attachments/assets/67d42788-b64e-4b26-90af-195a0b018e0f" />
 
 ---
 
